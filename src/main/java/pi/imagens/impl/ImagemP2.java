@@ -5,24 +5,31 @@ import pi.imagens.Imagem;
 import pi.pixel.impl.P2Pixel;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class ImagemP2 implements Imagem {
+public class ImagemP2 implements Imagem<P2Pixel> {
 
-     private final P2Pixel[][] imagem;
+     private final P2Pixel[][] matriz;
      private Integer linhas;
      private Integer colunas;
      private final Integer valorMaximoCor;
 
      public ImagemP2(Integer linhas, Integer colunas, Integer valorMaximoCor, List<Integer> valores) {
 
-          imagem = new P2Pixel[linhas][colunas];
+          matriz = new P2Pixel[linhas][colunas];
           inicializarImagem(valores);
+          this.valorMaximoCor = valorMaximoCor;
+          this.linhas = linhas;
+          this.colunas = colunas;
+     }
+
+     public ImagemP2(Integer linhas, Integer colunas, Integer valorMaximoCor, P2Pixel[][] matriz) {
+
+          this.matriz = matriz;
           this.valorMaximoCor = valorMaximoCor;
           this.linhas = linhas;
           this.colunas = colunas;
@@ -35,37 +42,23 @@ public class ImagemP2 implements Imagem {
                pixels.add(new P2Pixel(listaValores.get(i)));
           }
 
-          for (int i = 0; i < imagem.length; i++) {
-               for (int j = 0; j < imagem[i].length; j++) {
-                    imagem[i][j] = pixels.poll();
-               }
-          }
-          imprimirMatriz(imagem);
-     }
-
-     public static void imprimirMatriz(P2Pixel[][] matriz) {
-          int c = 0;
           for (int i = 0; i < matriz.length; i++) {
-               System.out.println();
                for (int j = 0; j < matriz[i].length; j++) {
-                    System.out.print(matriz[i][j] + " ");
-                    c++;
+                    matriz[i][j] = pixels.poll();
                }
           }
-          System.out.println();
-          System.out.println(c);
      }
-
      @Override public TipoImagem getTipoImagem() {
 
           return TipoImagem.P2;
      }
 
-     @Override public P2Pixel[][] getImagem() {
+     @Override public P2Pixel[][] getMatriz() {
 
-          return imagem;
+          return matriz;
      }
 
+     //TODO - REMOVER ESSE MÉTODO PARA OUTRA CLASSE
      @Override public void salvarImagem() throws IOException {
 
           File arquivo = new File("c:\\Users\\Thiago\\barco.pgm");
@@ -77,11 +70,40 @@ public class ImagemP2 implements Imagem {
           int c =  0;
           for (int i = 0; i < linhas; i++) {
                for (int j = 0; j < colunas; j++) {
-                    escritor.println(imagem[i][j].getCinza());
+                    escritor.println(matriz[i][j].getCinza());
                     c++;
                }
           }
           escritor.close();
           System.out.println(c);
+     }
+
+     @Override public Class<P2Pixel> classePixelImpl() {
+          return P2Pixel.class;
+     }
+
+     public Integer getLinhas() {
+
+          return linhas;
+     }
+
+     public void setLinhas(Integer linhas) {
+
+          this.linhas = linhas;
+     }
+
+     public Integer getColunas() {
+
+          return colunas;
+     }
+
+     public void setColunas(Integer colunas) {
+
+          this.colunas = colunas;
+     }
+
+     public Integer getValorMaximoCor() {
+
+          return valorMaximoCor;
      }
 }

@@ -2,9 +2,12 @@ package pi.pixel.impl;
 
 import pi.pixel.Pixel;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
 
 public class P2Pixel implements Pixel {
+
+     public P2Pixel(){}
 
      @Override public String toString() {
 
@@ -28,4 +31,12 @@ public class P2Pixel implements Pixel {
           this.cinza = cinza;
      }
 
+     @Override public List<Integer> getValoresArray() {
+
+          return Arrays.asList(cinza);
+     }
+
+     @Override public void setValoresArray(List<Integer> valoresArray) {
+          setCinza(valoresArray.get(0));
+     }
 }
